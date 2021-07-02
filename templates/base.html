@@ -1,0 +1,137 @@
+{% load static %}
+{% load icons %}
+{% load new_tags %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="it"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Always force latest IE rendering engine -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="L'offerta formativa, i programmi e i libri. La base dati dei corsi e delle adozioni universitarie">
+    <meta name="author" content="Almalibri - Tutta l'Università italiana">
+    <meta name="keywords" content="adozioni universitarie, programmi universitari">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    {%block scripts%}{%endblock%}
+
+		<!-- bootstrap css -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap-4-4-1/bootstrap.min.css' %}" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <!-- Font awesome Core CSS -->
+    <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!-- favicon.ico and friends -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicons/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/favicons/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'images/favicons/safari-pinned-tab.svg" color="#5bbad5' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicons/favicon.ico' %}">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-config" content="{% static 'images/favicons/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+  </head>
+
+  <body>
+
+		<!-- ====== Navigation ======  -->
+    <!-- navbar-expand-md  -->
+    <nav class="navbar navbar-dark navbar-expand-md" style="background:#000;">
+      <div class="container text-left">
+        <a class="navbar-brand" href="{% url 'index' %}">
+          <img src="{% static 'images/almalibri_bk_black.png' %}">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsMain" aria-controls="navbarsMain" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsMain">
+          <ul class="navbar-nav ml-auto">
+            <li><div class="dropdown-divider"></div></li>
+            <li class="nav-item active">
+               <a class="nav-link" href="{% url 'ricerca' %}">Ricerca</a>
+            </li>
+            <li class="nav-item active">
+               <a class="nav-link"  href="{% url 'ricerca_classifiche' %}">Classifiche</a>
+            </li>
+            <li class="nav-item dropdown active">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Per abbonati
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="nav-link nav-item" href="{% url 'selezione_uni' %}">Offerta formativa</a>
+                <a class="nav-link" href="{% url 'ricerca_adozioni' %}">Adozioni</a>
+                <a class="nav-link" href="{% url 'ricerca_nuove_adozioni' %}">Nuove adozioni</a>
+                {% if user|has_group:"auth" %}
+                  <a class="nav-link" href="{% url 'ricerca_adozioni_confermate' %}">Conferma adozioni</a>
+                {% endif %}
+                <div class="dropdown-divider"></div>
+                {% if user.is_authenticated %}
+                  <a class="nav-link disabled disabled-grayed" href="{% url 'login' %}">Login</a>
+                  <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                  <a class="nav-link" href="{% url 'password_change' %}">Cambio password</a>
+                {% else %}
+                  <a class="nav-link" href="{% url 'login' %}">Login</a>
+                  <a class="nav-link disabled disabled-grayed" href="{% url 'logout' %}">Logout</a>
+                  <a class="nav-link disabled disabled-grayed" href="{% url 'password_change' %}">Cambio password</a>
+                {% endif %}
+              </div>
+            </li>
+            <li class="nav-item active">
+               <a class="nav-link" href="{% url 'guida' %}">Guida</a>
+            </li>
+            <li class="nav-item active">
+               <a class="nav-link" href="{% url 'contatti' %}">Contatti</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+
+      {% block head %}{% endblock %}
+      {% include "user_logout.html"%}
+      {% block content %}{% endblock %}
+
+    </main>
+
+    <!--====== Footer ======-->
+		<footer class="base-footer text-center">
+			<div class="container">
+				{#<div class="text-center">#}
+					{#<span><i class="fab fa-facebook-f" aria-hidden="true"></i></span>#}
+					{#<span><i class="fab fa-twitter" aria-hidden="true"></i></span>#}
+					{#<span><i class="fab fa-linkedin" aria-hidden="true"></i></span>#}
+					{#<span><i class="fab fa-github" aria-hidden="true"></i></span>#}
+				{#</div>#}
+
+        <div class="row align-center text-center">
+          <div class="col-12 py-1 text-center">
+            <p class="text-no-margin"><small><a class="white" href="{% url 'cookie_policy' %}">Cookie policy</a>&nbsp;|&nbsp;<a class="white" href="{% url 'sale_conditions' %}">Condizioni di vendita</a></small></p>
+    				<p class="text-no-margin"><small>Almalibri s.r.l.s. - cf e p.iva 03898171206</span></p>
+          </div>
+        </div>
+
+      </div>
+		</footer>
+		<!--====== End Footer ======-->
+
+
+		<!--====== js ======-->
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <!-- bootstrap -->
+    <script src="{% static 'js/popper-1-16-0.min.js' %}" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="{% static 'js/bootstrap-4-4-1/bootstrap.min.js' %}" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!-- custom -->
+    <script src="{% static 'js/site.js' %}"></script>
+  </body>
+</html>

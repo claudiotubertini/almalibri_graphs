@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Adozioni - ricerca{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-4">
+
+  <div class="row">
+    <div class="col-12">
+      <h2>Adozioni - ricerca</h2>
+      <p>Inserire almeno un criterio di ricerca oltre all'A.A.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8 py-3 ">
+      <div class="input-group flex-nowrap py-3 py-lg-3 py-sm-1">
+        <!-- <form action="{% url 'ricerca_adozioni_risultati' %}" method="post" id="publishersForm" data-ssd-url="{% url 'ajax_ssd' %}"> -->
+           <form action="{% url 'graphs/details.html' %}" method="post" id="publishersForm" data-ssd-url="{% url 'ajax_ssd' %}">
+          {% csrf_token %}
+          <input type="hidden" name="ssd_selection" id="id_ssd_selection" value="">
+          <div class="table-responsive">
+            <table class="w-100">
+              {{ form.as_table }}
+            </table>
+            <div class="py-4"></div>
+            {#<input type="submit" class="btn btn-info mb-2" role="button" value="Esegui ricerca">#}
+            <button type="submit" class="btn btn-form-submit btn-lg btn-block mb-2" role="button" id="btn-submit">Esegui ricerca</button>
+           <!--  <button type="submit" class="btn btn-form-submit btn-lg btn-block mb-2" role="button" id="btn-submit" formaction="{% url 'graphs/details.html' %}">Elabora grafici</button> -->
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-2"></div>
+  </div>
+</div>
+
+<!-- Modal -->
+{% include 'modal_while_waiting.html' with blank_href=True %}
+<!-- jquery script -->
+{% include 'jquery_ssd_selection.html' with form_id="#publishersForm" %}
+
+{% endblock %}
