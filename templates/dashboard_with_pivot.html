@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<h1>Flexmonster integration with Django</h1>
+
+<div id="pivotContainer"></div>
+<script src="https://cdn.flexmonster.com/flexmonster.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.flexmonster.com/demo.css">
+<!-- <div id="pivot-table-container" data-url="{% url 'population-chart' %}"></div> -->
+
+<script>
+    // var pivot = new Flexmonster({
+    //     container: "pivotContainer",
+    //     toolbar: true,
+    //     componentFolder: "https://cdn.flexmonster.com/",
+    //     report: {
+    //         dataSource: {
+    //             type: "json",
+    //             filename: "https://cdn.flexmonster.com/data/data.json"
+    //         }
+    //     }
+    // });
+
+
+
+    $.ajax({
+    url: "{% url 'population-chart' %}",
+    dataType: 'json',
+    success: function(data) {
+        new Flexmonster({
+            container: "#pivotContainer",
+            componentFolder: "https://cdn.flexmonster.com/",
+            width: "100%",
+            height: 430,
+            toolbar: true,
+            report: {
+                dataSource: {
+                    type: "json",
+                    data: data
+                },
+                slice: {}
+            }
+        });
+        // new Flexmonster({
+        //     container: "#pivotContainer",
+        //     componentFolder: "https://cdn.flexmonster.com/",
+        //     width: "100%",
+        //     height: 430,
+        //     //toolbar: true,
+        //     report: {
+        //         dataSource: {
+        //             type: "json",
+        //             data: data
+        //         },
+        //         slice: {},
+        //         "options": {
+        //             "viewType": "charts",
+        //             "chart": {
+        //                 "type": "pie"
+        //             }
+        //         }
+        //     }
+        // });
+    }
+});
+
+</script> 
+
+ 
+
+  
+
+
+{% endblock %}
