@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v6.js"></script>
+<!-- <script data-require="d3@3.5.3" data-semver="3.5.3" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js"></script> -->
+
+
+
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+ <button type="button" class="btn btn-dark" onclick="drawChart_1()" >Editori</button> 
+
+<script>
+var drawChart_1 = function(){
+// set the dimensions and margins of the graph
+const margin = {top: 30, right: 30, bottom: 120, left: 60},
+    width = 1260 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+const svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+
+d3.dsv(",", "https://claudiotubertini.github.io/almalibri/editori.csv", (d) => {
+  return {
+    publisher : d.testo_editore,
+    count : +d.count
+  };
+  }).then((d) => {
+      const data = d;
+      var smalldata = data.filter(function(d) { return d.count > 500; }).sort(function(a,b) {return b.count - a.count;});
+      console.log(JSON.stringify(smalldata))
+  // X axis
+const x = d3.scaleBand()
+  .range([ 0, width ])
+  .domain(smalldata.map(d => d.publisher))
+  .padding(0.2);
+svg.append("g")
+  .attr("transform", `translate(0, ${height})`)
+  .call(d3.axisBottom(x))
+  .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+// Add Y axis
+const y = d3.scaleLinear()
+  .domain([0, 3500])
+  .range([ height, 0]);
+svg.append("g")
+  .call(d3.axisLeft(y));
+
+// Bars
+svg.selectAll("mybar")
+  .data(smalldata)
+  .join("rect")
+    .attr("x", d => x(d.publisher))
+    .attr("y", d => y(d.count))
+    .attr("width", x.bandwidth())
+    .attr("height", d => height - y(d.count))
+    .attr("fill", "#69b3a2");
+
+  });
+}
+</script>
+
+
+
+{% endblock %}
